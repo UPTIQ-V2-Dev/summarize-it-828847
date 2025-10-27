@@ -1,5 +1,14 @@
 import { z } from 'zod';
 
+// Login form validation schema
+export const loginFormSchema = z.object({
+    email: z.string().min(1, 'Email is required').email('Please enter a valid email address').toLowerCase(),
+    password: z
+        .string()
+        .min(6, 'Password must be at least 6 characters long')
+        .max(100, 'Password must be less than 100 characters')
+});
+
 // Summary form validation schema
 export const summaryFormSchema = z.object({
     text: z
@@ -28,6 +37,7 @@ export const textStatsSchema = z.object({
 });
 
 // Export inferred types
+export type LoginFormInput = z.infer<typeof loginFormSchema>;
 export type SummaryFormInput = z.infer<typeof summaryFormSchema>;
 export type SummaryRequestInput = z.infer<typeof summaryRequestSchema>;
 export type TextStatsInput = z.infer<typeof textStatsSchema>;

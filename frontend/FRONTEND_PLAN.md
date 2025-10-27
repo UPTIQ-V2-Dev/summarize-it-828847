@@ -18,7 +18,35 @@ A single-page application for text summarization with clean UI featuring dual-pa
 
 ## Page Implementation Plan
 
-### 1. Main Dashboard Page (`/`)
+### 1. Login Page (`/login`)
+
+#### Components to Create:
+
+- `LoginPage` - Main login page component
+    - Uses React Hook Form for form management
+    - Zod schema validation for email and password
+    - Loading states during authentication
+    - Error handling and user feedback
+    - Remember me functionality
+    - Redirect after successful login
+
+#### Features:
+
+- Email/password authentication
+- Form validation with real-time feedback
+- Loading spinner during login process
+- Error message display for failed login attempts
+- Responsive design for all screen sizes
+- Redirect to dashboard after successful login
+- Integration with existing auth service
+
+#### API Integration:
+
+- Uses existing `authService.login()` method
+- Handles authentication tokens and user data storage
+- Integrates with existing token refresh mechanism
+
+### 2. Main Dashboard Page (`/`)
 
 #### Components to Create:
 
@@ -118,6 +146,7 @@ A single-page application for text summarization with clean UI featuring dual-pa
 ```
 src/
 ├── pages/
+│   ├── LoginPage.tsx
 │   └── SummaryPage.tsx
 ├── components/
 │   ├── summary/

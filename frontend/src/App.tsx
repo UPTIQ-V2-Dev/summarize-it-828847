@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SummaryPage } from '@/pages/SummaryPage';
+import { LoginPage } from '@/pages/LoginPage';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -17,6 +18,10 @@ export const App = () => {
         <QueryClientProvider client={queryClient}>
             <Router>
                 <Routes>
+                    <Route
+                        path='/login'
+                        element={<LoginPage />}
+                    />
                     <Route
                         path='/'
                         element={<SummaryPage />}
