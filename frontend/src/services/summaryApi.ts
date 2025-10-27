@@ -1,6 +1,6 @@
 import { api } from '@/lib/api';
 import type { SummaryRequest, SummaryResponse } from '@/types/summary';
-import { mockSummaryResponses } from '@/data/mockData';
+import { emitter } from '@/agentSdk';
 
 const SUMMARY_ENDPOINTS = {
     GENERATE: '/api/summarize',
@@ -8,21 +8,24 @@ const SUMMARY_ENDPOINTS = {
 } as const;
 
 /**
- * Generate a summary of the provided text
+ * Generate a summary of the provided text using AI agent
  */
 export const generateSummary = async (data: SummaryRequest): Promise<SummaryResponse> => {
-    // Return mock data if environment variable is set
-    if (import.meta.env.VITE_USE_MOCK_DATA === 'true') {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, Math.random() * 2000 + 1000));
+    const agentResponse = await emitter.emit({
+        agentId: 'f08a04f2-a317-4e14-a680-8233fa280d23',
+        event: 'Original Text Input textbox',
+        payload: {
+            text: data.text,
+            options: data.options
+        }
+    });
 
-        const length = data.options?.length || 'medium';
-        return mockSummaryResponses[length];
-    }
-
-    const response = await api.post<SummaryResponse>(SUMMARY_ENDPOINTS.GENERATE, data);
-
-    return response.data;
+    // Transform agent response to match expected SummaryResponse format
+    return {
+        summary: agentResponse.summary,
+        wordCount: data.text.split(/\s+/).filter(word => word.length > 0).length,
+        processingTime: 1000 // Default processing time since agent doesn't provide this
+    };
 };
 
 /**
